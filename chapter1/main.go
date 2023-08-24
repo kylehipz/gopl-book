@@ -1,5 +1,5 @@
 package main
 
 func main() {
-  echo3()
+  exercise2()
 }
