@@ -7,69 +7,60 @@ import (
 )
 
 func exercise4() {
-	counts := make(map[string][]string)
-	files := os.Args[1:]
+  counts := make(map[string]int)
+  lineFilenameMap := make(map[string][]string)
 
-	if len(files) == 0 {
-		saveLines("stdin", counts)
-	} else {
-		for _, file := range files {
+  filenames := os.Args[1:]
 
-      err := saveLines(file, counts)
-      if err != nil {
-				fmt.Fprintf(os.Stderr, "dup2 %v\n", err)
-				continue
-      }
-		}
-	}
-
-	for line, filenames := range counts {
-		if len(filenames) > 1 {
-      fmt.Printf("%s:\t", line)
-      for _, filename := range filenames {
-        fmt.Printf("%s ", filename)
-      }
-      fmt.Println()
-		}
-	}
-}
-
-func saveLines(filename string, counts map[string][]string) error {
-  var f *os.File
-
-  if filename == "stdin" {
-    f = os.Stdin
-  } else {
-    file, err := os.Open(filename)
-
-    if err != nil {
-      return err
-    }
-
-    f = file
+  if len(filenames) == 0 {
+    fmt.Fprintf(os.Stderr, "dup4: no files provided")
+    return
   }
 
-	input := bufio.NewScanner(f)
+  for _, filename := range filenames {
+    f, err := os.Open(filename)
 
-	for input.Scan() {
-    text := input.Text()
-    list := counts[text]
+    if err != nil {
+      fmt.Fprintf(os.Stderr, "%s\t%v\n", filename, err)
+      continue
+    }
 
-    fileFound := false
+    input := bufio.NewScanner(f)
 
-    for _, existingFilename := range list {
-      if existingFilename == filename {
-        fileFound = true
+    for input.Scan() {
+      text := input.Text()
+
+      // save count
+      counts[text]++
+
+      list := lineFilenameMap[text]
+
+      fileFound := false
+
+      for _, item := range list {
+        if item == filename {
+          fileFound = true
+        }
+      }
+
+      if !fileFound {
+        lineFilenameMap[text] = append(list, filename)
       }
     }
+  }
 
-    if !fileFound {
-      counts[text] = append(list, filename)
+  for line, count := range counts {
+    if count > 1 {
+      filenames := lineFilenameMap[line]
+
+      fmt.Printf("%s:\t", line)
+
+      // Print all filenames with duplicates
+      for _, filename := range filenames {
+        fmt.Printf("%s\t", filename)
+      }
+
+      fmt.Println()
     }
-
-	}
-
-  f.Close()
-
-  return nil
+  }
 }
