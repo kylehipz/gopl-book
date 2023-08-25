@@ -1,11 +1,11 @@
 package main
 
 import (
-  "os"
-  "fmt"
-  "strings"
+	"fmt"
+	"os"
+	"strings"
 )
 
-func exercise1 () {
-  fmt.Println(strings.Join(os.Args, " "))
+func exercise1() {
+	fmt.Println(strings.Join(os.Args, " "))
 }

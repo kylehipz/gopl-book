@@ -1,17 +1,17 @@
-package main 
+package main
 
 import (
-  "os"
-  "fmt"
+	"fmt"
+	"os"
 )
 
-func echo2 () {
-  s, sep := "", ""
+func echo2() {
+	s, sep := "", ""
 
-  for _, arg := range os.Args[1:] {
-    s += sep + arg
-    sep = " "
-  }
+	for _, arg := range os.Args[1:] {
+		s += sep + arg
+		sep = " "
+	}
 
-  fmt.Println(s)
+	fmt.Println(s)
 }

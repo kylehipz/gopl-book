@@ -1,11 +1,11 @@
 package main
 
 import (
-  "os"
-  "fmt"
-  "strings"
+	"fmt"
+	"os"
+	"strings"
 )
 
-func echo3 () {
-  fmt.Println(strings.Join(os.Args[1:], " "))
+func echo3() {
+	fmt.Println(strings.Join(os.Args[1:], " "))
 }
