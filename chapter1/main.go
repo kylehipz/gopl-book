@@ -1,5 +1,5 @@
 package main
 
 func main() {
-	dup2()
+	exercise4()
 }
